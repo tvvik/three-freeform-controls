@@ -595,17 +595,17 @@ export default class Controls extends Group {
 
       this.position.copy(this.getLimitedTranslation(this.deltaPosition));
     } else {
-      const offsetPosition = new Vector3().copy(this.objectWorldPosition).add(this.rotationsCenter);
-      const p = new Vector3();
+      // const offsetPosition = new Vector3().copy(this.objectWorldPosition).add(this.rotationsCenter);
+      // const p = new Vector3();
 
       this.touch1
         .copy(this.dragIncrementalStartPoint)
-        .sub(offsetPosition)
+        .sub(this.objectWorldPosition)
         .normalize();
 
       this.touch2
         .copy(point)
-        .sub(offsetPosition)
+        .sub(this.objectWorldPosition)
         .normalize();
 
       this.handleTargetQuaternion.setFromUnitVectors(this.touch1, this.touch2);
