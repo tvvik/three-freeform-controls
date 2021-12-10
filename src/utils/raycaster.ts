@@ -167,6 +167,7 @@ export default class Raycaster extends ThreeRaycaster {
         this.activePlane.setFromNormalAndCoplanarPoint(this.normal, this.activeHandle.position);
       } else {
         this.activePlane.setFromNormalAndCoplanarPoint(this.normal, controls.position);
+        this.activePlaneCompensated.setFromNormalAndCoplanarPoint(this.normal, controls.position);
       }
 
       // find initial intersection
