@@ -596,6 +596,8 @@ export default class Controls extends Group {
       this.position.copy(this.getLimitedTranslation(this.deltaPosition));
     } else {
       const offsetPosition = new Vector3().copy(this.objectWorldPosition).add(this.rotationsCenter);
+      const p = new Vector3();
+
       this.touch1
         .copy(this.dragIncrementalStartPoint)
         .sub(offsetPosition)

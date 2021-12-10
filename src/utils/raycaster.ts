@@ -18,6 +18,7 @@ import {
   Vector3,
   Raycaster as ThreeRaycaster
 } from "three";
+import { threadId } from "worker_threads";
 
 export enum EVENTS {
   DRAG_START = "DRAG_START",
@@ -35,6 +36,7 @@ export default class Raycaster extends ThreeRaycaster {
   private cameraPosition = new Vector3();
   private activeHandle: IHandle | null = null;
   private activePlane: Plane | null = null;
+  private activePlaneCompensated: Plane | null = null;
   private point = new Vector3();
   private normal = new Vector3();
   private visibleHandles: Object3D[] = [];
@@ -134,6 +136,8 @@ export default class Raycaster extends ThreeRaycaster {
        * take place. mouse movements are translated to points on the activePlane
        */
       this.activePlane = new Plane();
+      this.activePlaneCompensated = new Plane();
+      this.activePlaneCompensated.position.copy(this.controls.rotationsCenter);
       const eyePlaneNormal = this.getEyePlaneNormal(this.activeHandle);
       controls.getWorldQuaternion(this.controlsWorldQuaternion);
       this.normal.copy(
@@ -170,7 +174,8 @@ export default class Raycaster extends ThreeRaycaster {
       if (this.activeHandle instanceof PickGroup) {
         this.activeHandle.getWorldPosition(initialIntersectionPoint);
       } else {
-        this.ray.intersectPlane(this.activePlane, initialIntersectionPoint);
+        const pl = this.activeHandle instanceof RotationGroup ? this.activePlaneCompensated : this.activePlane;
+        this.ray.intersectPlane(pl, initialIntersectionPoint);
       }
 
       // activate the helper plane if asked
@@ -255,7 +260,8 @@ export default class Raycaster extends ThreeRaycaster {
     const { clientX, clientY } = point;
 
     this.setRayDirection(clientX, clientY);
-    this.ray.intersectPlane(this.activePlane, this.point);
+    const pl = this.activeHandle instanceof RotationGroup ? this.activePlaneCompensated : this.activePlane;
+    this.ray.intersectPlane(pl, this.point);
 
     this.currentScreenPoint.set(clientX, clientY);
     const distance = this.currentScreenPoint.distanceTo(this.previousScreenPoint);
