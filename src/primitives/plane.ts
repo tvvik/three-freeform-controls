@@ -23,4 +23,12 @@ export default class Plane extends Mesh {
     });
     this.material.opacity = PICK_PLANE_OPACITY.INACTIVE;
   }
+
+  getPosition() {
+    return (<Mesh> this).position;
+  }
+
+  setPosition(newPosition) {
+    (<Mesh> this).position.copy(newPosition);
+  }
 }

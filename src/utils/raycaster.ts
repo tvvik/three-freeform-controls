@@ -137,7 +137,7 @@ export default class Raycaster extends ThreeRaycaster {
        */
       this.activePlane = new Plane();
       this.activePlaneCompensated = new Plane();
-      this.activePlaneCompensated.position.copy(this.controls.rotationsCenter);
+      this.activePlaneCompensated.setPosition(this.controls.rotationsCenter);
       const eyePlaneNormal = this.getEyePlaneNormal(this.activeHandle);
       controls.getWorldQuaternion(this.controlsWorldQuaternion);
       this.normal.copy(
