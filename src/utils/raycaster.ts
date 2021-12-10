@@ -137,7 +137,7 @@ export default class Raycaster extends ThreeRaycaster {
        */
       this.activePlane = new Plane();
       this.activePlaneCompensated = new Plane();
-      this.activePlaneCompensated.setPosition(this.controls.rotationsCenter);
+      this.activePlaneCompensated.translate(controls.rotationsCenter);
       const eyePlaneNormal = this.getEyePlaneNormal(this.activeHandle);
       controls.getWorldQuaternion(this.controlsWorldQuaternion);
       this.normal.copy(
@@ -261,7 +261,7 @@ export default class Raycaster extends ThreeRaycaster {
 
     this.setRayDirection(clientX, clientY);
     const pl = this.activeHandle instanceof RotationGroup ? this.activePlaneCompensated : this.activePlane;
-    this.ray.intersectPlane(pl, this.point);
+    if (pl) this.ray.intersectPlane(pl, this.point);
 
     this.currentScreenPoint.set(clientX, clientY);
     const distance = this.currentScreenPoint.distanceTo(this.previousScreenPoint);
